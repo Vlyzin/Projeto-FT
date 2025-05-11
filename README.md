@@ -81,4 +81,4 @@ Projeto-FT/
 
 ---
 
-Desenvolvido com 💻 por [Vlyzin](https://github.com/Vlyzin)
+Desenvolvido por [Vlyzin](https://github.com/Vlyzin)
