@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Frota</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="header">Monitoramento de Frota</div>
+
+    <div id="map"></div>
+
+    <!-- Conteúdo abaixo do mapa -->
+<div class="content">
+    <p></p>
+</div>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Painel Lateral -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-content">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#">Cadastrar Origem</a></li>
+                <li><a href="#">Extrair Relatórios</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Botão para abrir o painel -->
+    <div class="button-container">
+        <button class="change-btn">
+            <img src="{{ url_for('static', filename='img/change.png') }}" alt="Alterar">
+        </button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

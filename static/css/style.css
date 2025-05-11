@@ -1,0 +1,147 @@
+/* Estilo do Mapa */
+#map {
+    height: 600px;
+    width: 100%;
+}
+
+/* Estilo do corpo da página */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Estilo da barra superior */
+.header {
+    background: linear-gradient(to bottom, #003366, #001f33);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 36px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo do conteúdo abaixo do mapa */
+.content {
+    background: linear-gradient(to bottom, #003366, #001f33);
+    padding: 40px 20px;
+    color: white;
+    text-align: center;
+    flex-grow: 1;
+}
+
+/* Estilo para o botão de mudança */
+.button-container {
+    position: absolute;
+    top: 20px;
+    left: 50px;
+    z-index: 100;
+}
+
+/* Esconder o ícone quando o painel lateral estiver aberto */
+.button-container.hidden {
+    display: none;
+}
+.change-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.change-btn img {
+    width: 40px;
+    height: 40px;
+}
+
+/* Estilo do painel lateral */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #003366;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 10;
+    display: none;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+    display: block;
+}
+
+/* Conteúdo do painel lateral */
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-content h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: white;
+}
+
+.sidebar-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-content ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar-content ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.sidebar-content ul li a:hover {
+    color: #ffcc00;
+}
+
+/* Exibição do painel lateral (quando o botão for clicado) */
+.sidebar.open {
+    left: 0;
+}
+
+/* Garante que o painel lateral esteja sempre por cima */
+#map {
+    z-index: 1;
+}
+
+.sidebar {
+    z-index: 10;
+}
+
+.button-container {
+    z-index: 20;
+}
+
+/* Estilo para a área de fundo que ficará visível quando o painel lateral abrir */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 5;
+    display: none;  /* Inicialmente invisível */
+}
+.overlay.visible {
+    display: block;
+}
