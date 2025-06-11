@@ -145,3 +145,64 @@ body {
 .overlay.visible {
     display: block;
 }
+
+/* Caixa branca para o formulário */
+.form-box {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 0 auto; /* centraliza horizontalmente */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  color: #222;
+  text-align: left;
+}
+
+/* Inputs e select com estilo igual */
+.form-box select,
+.form-box input[type="text"] {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  height: 38px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 10px 7px;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3csvg%20width%3d%2210%22%20height%3d%227%22%20viewBox%3d%220%200%2010%207%22%20fill%3d%22none%22%20xmlns%3d%22http%3a//www.w3.org/2000/svg%22%3e%3cpath%20d%3d%22M1%201L5%205L9%201%22%20stroke%3d%22%23666%22%20stroke-width%3d%222%22/%3e%3c/svg%3e");
+}
+
+/* Remove seta para inputs text */
+.form-box input[type="text"] {
+  background-image: none;
+}
+
+/* Labels */
+.form-box label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* Botão */
+.form-box button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.form-box button:hover {
+  background-color: #002244;
+}

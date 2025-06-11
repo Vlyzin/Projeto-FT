@@ -104,3 +104,66 @@ $(document).ready(function() {
         $(".button-container").removeClass("hidden");
     });
 });
+
+// ---------- NOVO: carregar selects ao clicar no botão Criar Viagem ----------
+const btnCreateTrip = document.getElementById('btnCreateTrip');
+const formViagem = document.getElementById('formViagem');
+
+btnCreateTrip.addEventListener('click', async () => {
+    if(formViagem.style.display === 'block') {
+      formViagem.style.display = 'none';
+      return;
+    }
+    formViagem.style.display = 'block';
+
+    // Veículos fictícios para teste
+    const veiculos = [
+      { id: '1' },
+      { id: '2' },
+      { id: '3' }
+    ];
+
+    // Popula select de placas
+    const selectPlaca = document.getElementById('placa');
+    selectPlaca.innerHTML = '<option value="">Selecione um veículo</option>';
+    veiculos.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v.id;
+      opt.textContent = `Veículo ${v.id}`;
+      selectPlaca.appendChild(opt);
+    });
+
+    // Carrega locais origem da API
+    try {
+      const resOrigem = await fetch('/api/locais/origem');
+      const origens = await resOrigem.json();
+      const selectOrigem = document.getElementById('origem');
+      selectOrigem.innerHTML = '<option value="">Selecione local de origem</option>';
+      origens.forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o.codigoLocal || o.nomeLocal;
+        opt.textContent = o.nomeLocal;
+        selectOrigem.appendChild(opt);
+      });
+    } catch {
+      alert('Erro ao carregar locais de origem.');
+      document.getElementById('origem').innerHTML = '<option value="">Erro ao carregar locais</option>';
+    }
+
+    // Carrega locais destino da API
+    try {
+      const resDestino = await fetch('/api/locais/destino');
+      const destinos = await resDestino.json();
+      const selectDestino = document.getElementById('destino');
+      selectDestino.innerHTML = '<option value="">Selecione local de destino</option>';
+      destinos.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.codigoLocal || d.nomeLocal;
+        opt.textContent = d.nomeLocal;
+        selectDestino.appendChild(opt);
+      });
+    } catch {
+      alert('Erro ao carregar locais de destino.');
+      document.getElementById('destino').innerHTML = '<option value="">Erro ao carregar locais</option>';
+    }
+});

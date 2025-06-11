@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro Local</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Painel Lateral -->
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-content">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="/">Mapa de Monitoramento</a></li>
+        <li><a href="/cadastrar-pontos">Cadastrar Pontos</a></li>
+        <li><a href="#">Extrair Relatórios</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Botão para abrir o painel -->
+  <div class="button-container">
+    <button class="change-btn" aria-label="Abrir menu">
+      <img src="{{ url_for('static', filename='img/change.png') }}" alt="Alterar">
+    </button>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div class="content">
+    <h2>Cadastro Local</h2>
+    <div class="form-box">
+      <div id="mensagem" style="text-align:center; margin-bottom:10px; font-weight:bold;"></div>
+      <form id="formCadastro">
+        <label for="nomeLocal">Nome do Local</label>
+        <input id="nomeLocal" type="text" name="nomeLocal" required />
+
+        <label for="codigoLocal">Código Local</label>
+        <input id="codigoLocal" type="text" name="codigoLocal" required />
+
+        <label for="tipoLocal">Tipo do Local</label>
+        <select id="tipoLocal" name="tipoLocal" required>
+          <option value="">Selecione</option>
+          <option value="destino">Destino</option>
+          <option value="origem">Origem</option>
+        </select>
+
+        <label for="uf">UF</label>
+        <input id="uf" type="text" name="uf" maxlength="2" required />
+
+        <label for="cidade">Cidade</label>
+        <input id="cidade" type="text" name="cidade" required />
+
+        <label for="latitude">Latitude</label>
+        <input id="latitude" name="latitude" type="text" required placeholder="-23.56789" />
+
+        <label for="longitude">Longitude</label>
+        <input id="longitude" name="longitude" type="text" required placeholder="-46.67890" />
+
+        <button type="submit">Salvar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Validação de latitude/longitude -->
+  <script>
+    document.getElementById('formCadastro').addEventListener('submit', function(event) {
+      const lat = document.getElementById('latitude').value.trim();
+      const lon = document.getElementById('longitude').value.trim();
+
+      const regex = /^-?[0-9.,]+$/;
+
+      if (!regex.test(lat)) {
+        alert('Latitude inválida! Use somente números, ponto, vírgula e hífen.');
+        event.preventDefault();
+        return;
+      }
+      if (!regex.test(lon)) {
+        alert('Longitude inválida! Use somente números, ponto, vírgula e hífen.');
+        event.preventDefault();
+        return;
+      }
+    });
+  </script>
+
+  <!-- Script de envio do formulário -->
+  <script>
+    document.getElementById("formCadastro").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const dados = {
+        nomeLocal: document.getElementById("nomeLocal").value,
+        codigoLocal: document.getElementById("codigoLocal").value,
+        tipoLocal: document.getElementById("tipoLocal").value,
+        uf: document.getElementById("uf").value,
+        cidade: document.getElementById("cidade").value,
+        latitude: document.getElementById("latitude").value,
+        longitude: document.getElementById("longitude").value,
+      };
+
+      const mensagemDiv = document.getElementById("mensagem");
+
+      try {
+        const response = await fetch("/salvar-local", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dados),
+        });
+
+        const resultado = await response.json();
+
+        if (response.ok) {
+          mensagemDiv.textContent = "Local salvo com sucesso!";
+          mensagemDiv.style.color = "lime";
+
+          // Aguarda 2 segundos e recarrega a página
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        } else {
+          mensagemDiv.textContent = resultado.message || "Erro ao salvar o local.";
+          mensagemDiv.style.color = "red";
+        }
+
+      } catch (error) {
+        console.error("Erro ao salvar:", error);
+        mensagemDiv.textContent = "Erro ao salvar o local.";
+        mensagemDiv.style.color = "red";
+      }
+    });
+  </script>
+
+  <!-- Script de sidebar -->
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.querySelector('.overlay');
+    const btnToggle = document.querySelector('.change-btn');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      overlay.classList.add('visible');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+    }
+
+    btnToggle.addEventListener('click', () => {
+      if (sidebar.classList.contains('open')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    });
+
+    overlay.addEventListener('click', closeSidebar);
+  </script>
+</body>
+</html>

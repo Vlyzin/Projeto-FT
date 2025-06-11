@@ -1,0 +1,20 @@
+[
+  {
+    "nomeLocal": "Sao Paulo Bayer",
+    "codigoLocal": "123",
+    "tipoLocal": "origem",
+    "uf": "SP",
+    "cidade": "São Paulo",
+    "latitude": "-23.659161089290045",
+    "longitude": "-46.72081873436141"
+  },
+  {
+    "nomeLocal": "Bayer Ibipora",
+    "codigoLocal": "321",
+    "tipoLocal": "destino",
+    "uf": "PR",
+    "cidade": "Ibipora",
+    "latitude": "-23.21669843929585",
+    "longitude": " -51.055037331990604"
+  }
+]

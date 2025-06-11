@@ -1,37 +1,100 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Monitoramento de Frota</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+      .content {
+        background-color: #007bff;
+        color: white;
+        padding: 20px;
+        min-height: 140px;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      .btn-create-trip {
+        background: #ffcc00;
+        border: none;
+        color: #003366;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 6px;
+        transition: background-color 0.3s ease;
+      }
+      .btn-create-trip:hover {
+        background: #e6b800;
+      }
+
+      #formViagem {
+        background-color: #0056b3;
+        padding: 15px;
+        border-radius: 6px;
+        margin-top: 15px;
+        display: none;
+      }
+
+      #formViagem label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+      }
+
+      #formViagem select {
+        width: 100%;
+        padding: 6px;
+        border-radius: 4px;
+        border: none;
+        font-size: 14px;
+      }
+    </style>
 </head>
 <body>
     <div class="header">Monitoramento de Frota</div>
 
     <div id="map"></div>
 
-    <!-- Conteúdo abaixo do mapa -->
-<div class="content">
-    <p></p>
-</div>
+    <div class="content">
+      <button id="btnCreateTrip" class="btn-create-trip">Criar viagem</button>
 
-    <!-- Overlay -->
+<!-- trecho do formViagem no seu HTML -->
+<form id="formViagem" style="display:none;">
+  <label for="placa">Placa (Veículo)</label>
+  <select id="placa" name="placa" required>
+    <option value="">Carregando veículos...</option>
+  </select>
+
+  <label for="origem">Local de Origem</label>
+  <select id="origem" name="origem" required>
+    <option value="">Carregando locais de origem...</option>
+  </select>
+
+  <label for="destino">Local de Destino</label>
+  <select id="destino" name="destino" required>
+    <option value="">Carregando locais de destino...</option>
+  </select>
+</form>
+
+    </div>
+
     <div class="overlay"></div>
 
-    <!-- Painel Lateral -->
     <div id="sidebar" class="sidebar">
         <div class="sidebar-content">
             <h2>Menu</h2>
             <ul>
-                <li><a href="#">Cadastrar Origem</a></li>
+                <li><a href="/">Mapa de Monitoramento</a></li>
+                <li><a href="/cadastrar-pontos">Cadastrar Pontos</a></li>
                 <li><a href="#">Extrair Relatórios</a></li>
             </ul>
         </div>
     </div>
 
-    <!-- Botão para abrir o painel -->
     <div class="button-container">
         <button class="change-btn">
             <img src="{{ url_for('static', filename='img/change.png') }}" alt="Alterar">
@@ -41,5 +104,69 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script>
+      const btnCreateTrip = document.getElementById('btnCreateTrip');
+      const formViagem = document.getElementById('formViagem');
+
+      btnCreateTrip.addEventListener('click', async () => {
+        if(formViagem.style.display === 'block') {
+          formViagem.style.display = 'none';
+          return;
+        }
+        formViagem.style.display = 'block';
+
+        // Carrega veículos da API
+        try {
+          const resVeiculos = await fetch('/api/veiculos');
+          const veiculos = await resVeiculos.json();
+          const selectPlaca = document.getElementById('placa');
+          selectPlaca.innerHTML = '<option value="">Selecione um veículo</option>';
+          veiculos.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v.id;
+            opt.textContent = v.placa || `Veículo ${v.id}`;
+            selectPlaca.appendChild(opt);
+          });
+        } catch {
+          alert('Erro ao carregar veículos.');
+          document.getElementById('placa').innerHTML = '<option value="">Erro ao carregar veículos</option>';
+        }
+
+        // Carrega locais origem da API
+        try {
+          const resOrigem = await fetch('/api/locais/origem');
+          const origens = await resOrigem.json();
+          const selectOrigem = document.getElementById('origem');
+          selectOrigem.innerHTML = '<option value="">Selecione local de origem</option>';
+          origens.forEach(o => {
+            const opt = document.createElement('option');
+            opt.value = o.codigoLocal || o.nomeLocal;
+            opt.textContent = o.nomeLocal;
+            selectOrigem.appendChild(opt);
+          });
+        } catch {
+          alert('Erro ao carregar locais de origem.');
+          document.getElementById('origem').innerHTML = '<option value="">Erro ao carregar locais</option>';
+        }
+
+        // Carrega locais destino da API
+        try {
+          const resDestino = await fetch('/api/locais/destino');
+          const destinos = await resDestino.json();
+          const selectDestino = document.getElementById('destino');
+          selectDestino.innerHTML = '<option value="">Selecione local de destino</option>';
+          destinos.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d.codigoLocal || d.nomeLocal;
+            opt.textContent = d.nomeLocal;
+            selectDestino.appendChild(opt);
+          });
+        } catch {
+          alert('Erro ao carregar locais de destino.');
+          document.getElementById('destino').innerHTML = '<option value="">Erro ao carregar locais</option>';
+        }
+      });
+    </script>
 </body>
 </html>
